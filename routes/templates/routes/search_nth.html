@@ -1,0 +1,58 @@
+{% extends 'routes/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="glass-card h-100">
+            <h2 class="mb-4">Search <span class="text-accent">Nth Node</span></h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label text-white small fw-bold">STARTING AIRPORT</label>
+                    {{ form.start_airport }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white small fw-bold">STEPS (N)</label>
+                    {{ form.n }}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-white small fw-bold">DIRECTION</label>
+                    {{ form.direction }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-3">Locate Node</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="glass-card h-100">
+            <h3>Search Result</h3>
+            <hr class="border-secondary opacity-25">
+
+            {% if result %}
+            <div class="alert alert-success bg-success bg-opacity-10 border-success border-opacity-25 text-white mb-4">
+                <h5 class="alert-heading">Node Found!</h5>
+                <p class="mb-0">The target node is <strong>{{ result.airport_code }}</strong>.</p>
+            </div>
+
+            <h5 class="text-white small fw-bold mb-3">TRAVERSAL PATH:</h5>
+            <div class="d-flex flex-wrap align-items-center">
+                {% for node in search_path %}
+                <div class="path-node">{{ node.airport_code }}</div>
+                {% if not forloop.last %}
+                <span class="path-arrow">➜</span>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% elif request.method == 'POST' %}
+            <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-white">
+                <h5 class="alert-heading">No Node Found</h5>
+                <p class="mb-0">There is no node at that distance in the specified direction.</p>
+            </div>
+            {% else %}
+            <p class="text-white">Enter search criteria to visualize traversal.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

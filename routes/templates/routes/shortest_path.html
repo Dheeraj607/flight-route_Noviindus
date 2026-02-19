@@ -1,0 +1,53 @@
+{% extends 'routes/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="glass-card h-100">
+            <h2 class="mb-4">Path <span class="text-accent">Optimization</span></h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label text-white small fw-bold">FROM AIRPORT</label>
+                    {{ form.from_airport }}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-white small fw-bold">TO AIRPORT</label>
+                    {{ form.to_airport }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-3">Calculate Route</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="glass-card h-100">
+            <h3>Optimized Path Result</h3>
+            <hr class="border-secondary opacity-25">
+
+            {% if path %}
+            <div class="mb-4">
+                <p class="text-white small fw-bold mb-2">TOTAL TRIP DURATION:</p>
+                <div class="h2 text-accent">{{ total_duration }} <span class="h5 text-white">minutes</span></div>
+            </div>
+
+            <h5 class="text-white small fw-bold mb-3">CONNECTION SEQUENCE:</h5>
+            <div class="d-flex flex-wrap align-items-center">
+                {% for node in path %}
+                <div class="path-node">{{ node.airport_code }}</div>
+                {% if not forloop.last %}
+                <span class="path-arrow">➜</span>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% elif request.method == 'POST' %}
+            <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-white">
+                <p class="mb-0">No valid path found between these airports.</p>
+            </div>
+            {% else %}
+            <p class="text-white">Select airports to calculate the most efficient flight path.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

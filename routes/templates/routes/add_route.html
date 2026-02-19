@@ -1,0 +1,31 @@
+{% extends 'routes/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="glass-card">
+            <h2 class="text-center mb-4">Add Airport <span class="text-accent">Route</span></h2>
+            <form method="post" class="needs-validation">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label text-white small fw-bold">AIRPORT CODE</label>
+                    {{ form.airport_code }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white small fw-bold">PARENT AIRPORT (OPTIONAL)</label>
+                    {{ form.parent }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white small fw-bold">POSITION</label>
+                    {{ form.position }}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-white small fw-bold">DURATION (MINUTES)</label>
+                    {{ form.duration }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-3">Register Node</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
